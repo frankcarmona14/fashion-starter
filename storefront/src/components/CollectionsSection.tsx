@@ -1,8 +1,8 @@
 import Image from "next/image"
 
 import { getCollectionsList } from "@lib/data/collections"
-import { Carousel } from "@/components/Carousel"
 import { LocalizedButtonLink, LocalizedLink } from "@/components/LocalizedLink"
+import { CollectionsSectionCarousel } from "@/components/CollectionsSectionCarousel"
 
 export const CollectionsSection: React.FC<{ className?: string }> = async ({
   className,
@@ -19,7 +19,7 @@ export const CollectionsSection: React.FC<{ className?: string }> = async ({
   }
 
   return (
-    <Carousel
+    <CollectionsSectionCarousel
       heading={<h3 className="text-lg md:text-2xl">Collections</h3>}
       button={
         <>
@@ -38,10 +38,7 @@ export const CollectionsSection: React.FC<{ className?: string }> = async ({
       className={className}
     >
       {collections.collections.map((collection) => (
-        <div
-          className="w-[70%] sm:w-[60%] lg:w-full max-w-124 flex-shrink-0"
-          key={collection.id}
-        >
+        <div key={collection.id}>
           <LocalizedLink href={`/collections/${collection.handle}`}>
             {typeof collection.metadata?.image === "object" &&
               collection.metadata.image &&
@@ -65,6 +62,6 @@ export const CollectionsSection: React.FC<{ className?: string }> = async ({
           </LocalizedLink>
         </div>
       ))}
-    </Carousel>
+    </CollectionsSectionCarousel>
   )
 }

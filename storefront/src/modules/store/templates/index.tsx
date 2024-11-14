@@ -9,8 +9,8 @@ import { getCollectionsList } from "@lib/data/collections"
 import { getCategoriesList } from "@lib/data/categories"
 import { getProductTypesList } from "@lib/data/product-types"
 import { LocalizedLink } from "@/components/LocalizedLink"
-import { Carousel } from "@/components/Carousel"
 import PaginatedProducts from "./paginated-products"
+import { CollectionsCarousel } from "@/components/CollectionsCarousel"
 
 const CollectionsSlider = async () => {
   const collections = await getCollectionsList(0, 20, [
@@ -25,15 +25,12 @@ const CollectionsSlider = async () => {
   }
 
   return (
-    <Carousel
+    <CollectionsCarousel
       heading={<h3 className="text-lg md:text-2xl">Collections</h3>}
       className="mb-26 md:mb-36"
     >
       {collections.collections.map((c) => (
-        <div
-          key={c.id}
-          className="w-[70%] sm:w-[60%] lg:w-full max-w-72 flex-shrink-0"
-        >
+        <div key={c.id}>
           <LocalizedLink href={`/collections/${c.handle}`}>
             {typeof c.metadata?.image === "object" &&
               c.metadata.image &&
@@ -47,7 +44,7 @@ const CollectionsSlider = async () => {
           </LocalizedLink>
         </div>
       ))}
-    </Carousel>
+    </CollectionsCarousel>
   )
 }
 
