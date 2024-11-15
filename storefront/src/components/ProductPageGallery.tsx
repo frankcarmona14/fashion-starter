@@ -60,7 +60,7 @@ export const ProductPageGallery: React.FC<
   return (
     <div className={twMerge("overflow-hidden relative", className)}>
       <div className="relative flex items-center p-0 lg:mb-6">
-        <ArrowButton scroll={scrollPrev} btnDisabled={prevBtnDisabled} />
+        <ArrowButton onClick={scrollPrev} disabled={prevBtnDisabled} />
         <div ref={emblaRef} className="w-full">
           <div className="flex touch-pan-y gap-4">
             {React.Children.map(children, (child) => {
@@ -74,8 +74,8 @@ export const ProductPageGallery: React.FC<
         </div>
         <ArrowButton
           direction="right"
-          scroll={scrollNext}
-          btnDisabled={nextBtnDisabled}
+          onClick={scrollNext}
+          disabled={nextBtnDisabled}
         />
       </div>
       <div className="flex justify-center max-lg:w-full max-lg:absolute max-lg:bottom-4">
@@ -100,20 +100,13 @@ export const ProductPageGallery: React.FC<
   )
 }
 
-type ArrowButtonOwnProps = {
-  direction?: "left" | "right"
-  scroll: () => void | undefined
-  btnDisabled: boolean
-}
-
 export const ArrowButton: React.FC<
-  ArrowButtonOwnProps & React.ComponentPropsWithoutRef<"button">
-> = ({ direction = "left", scroll, btnDisabled, className, ...rest }) => (
+  { direction?: "left" | "right" } & React.ComponentPropsWithoutRef<"button">
+> = ({ direction = "left", disabled, className, ...rest }) => (
   <button
     {...rest}
     type="button"
-    onClick={scroll}
-    disabled={btnDisabled}
+    disabled={disabled}
     className={twMerge(
       "transition-opacity absolute z-10 max-lg:hidden",
       direction === "left" && "left-4",
@@ -124,7 +117,7 @@ export const ArrowButton: React.FC<
     <IconCircle
       className={twJoin(
         "bg-black text-white transition-colors",
-        btnDisabled && "bg-transparent text-black"
+        disabled && "bg-transparent text-black"
       )}
     >
       <Icon name="arrow-left" className="w-6 h-6" />
