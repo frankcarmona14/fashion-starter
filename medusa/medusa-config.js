@@ -24,14 +24,14 @@ module.exports = defineConfig({
       resolve: '@medusajs/medusa/payment',
       options: {
         providers: [
-          {
-            id: 'stripe',
-            resolve: '@medusajs/medusa/payment-stripe',
-            options: {
-              apiKey: process.env.STRIPE_API_KEY,
-              webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
-            },
-          },
+          // {
+          //   id: 'stripe',
+          //   resolve: '@medusajs/medusa/payment-stripe',
+          //   options: {
+          //     apiKey: process.env.STRIPE_API_KEY,
+          //     webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
+          //   },
+          // },
         ],
       },
     },
