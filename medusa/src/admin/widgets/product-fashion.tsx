@@ -120,7 +120,7 @@ const AddColorDrawer: React.FC<{
       <Drawer.Trigger asChild>{children}</Drawer.Trigger>
       <Drawer.Content>
         <Drawer.Header>
-          <Drawer.Title>Add new color</Drawer.Title>
+          <Drawer.Title>Agregar nuevo color</Drawer.Title>
         </Drawer.Header>
         <Drawer.Body className="p-4">
           <Form
@@ -139,11 +139,11 @@ const AddColorDrawer: React.FC<{
           >
             <div className="flex flex-col gap-4">
               <fieldset disabled>
-                <InputField name="name" label="Name" />
+                <InputField name="name" label="Nombre" />
               </fieldset>
               <InputField
                 name="hex_code"
-                label="Hex code"
+                label="Código Hex"
                 type="color"
                 inputProps={{
                   className: 'max-w-8',
@@ -154,7 +154,7 @@ const AddColorDrawer: React.FC<{
         </Drawer.Body>
         <Drawer.Footer>
           <Drawer.Close asChild>
-            <Button variant="secondary">Cancel</Button>
+            <Button variant="secondary">Cancelar</Button>
           </Drawer.Close>
           <Button
             type="submit"
@@ -164,7 +164,7 @@ const AddColorDrawer: React.FC<{
             isLoading={createColorMutation.isPending}
             disabled={createColorMutation.isPending}
           >
-            Save
+            Guardar
           </Button>
         </Drawer.Footer>
       </Drawer.Content>
@@ -206,7 +206,7 @@ const ProductFashionWidget = withQueryClient(
     return (
       <Container className="divide-y p-0">
         <div className="flex flex-row items-center justify-between px-6 py-4 gap-6">
-          <Heading>Materials &amp; Colors</Heading>
+          <Heading>Materiales y Colores</Heading>
           <IconButton
             variant="transparent"
             className="text-ui-fg-muted hover:text-ui-fg-subtle"
@@ -222,13 +222,13 @@ const ProductFashionWidget = withQueryClient(
         </div>
         <div className="text-ui-fg-subtle px-6 py-4">
           {productFashion.isLoading ? (
-            <Text>Loading...</Text>
+            <Text>Cargando...</Text>
           ) : productFashion.isError ? (
-            <Text>Error loading product materials</Text>
+            <Text>Error al cargar materiales del producto</Text>
           ) : productFashion.isSuccess &&
             productFashion.data &&
             !materialsData.length ? (
-            <Text>No product variants with Material option</Text>
+            <Text>No hay variantes de producto con opción de Material</Text>
           ) : productFashion.isSuccess && productFashion.data ? (
             <div className="flex flex-col gap-8">
               {materialsData.map((material) => (
@@ -257,7 +257,7 @@ const ProductFashionWidget = withQueryClient(
                         });
                       }}
                     >
-                      Create material
+                      Crear material
                     </Button>
                   ) : (
                     <div className="flex flex-row gap-4">
@@ -296,7 +296,7 @@ const ProductFashionWidget = withQueryClient(
               ))}
             </div>
           ) : (
-            <Text>No fashion details set</Text>
+            <Text>No hay detalles de moda configurados</Text>
           )}
         </div>
       </Container>

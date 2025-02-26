@@ -66,7 +66,7 @@ const EditColorDrawer: React.FC<{
       <Drawer.Trigger asChild>{children}</Drawer.Trigger>
       <Drawer.Content>
         <Drawer.Header>
-          <Drawer.Title>Edit Color</Drawer.Title>
+          <Drawer.Title>Editar Color</Drawer.Title>
         </Drawer.Header>
         <Drawer.Body>
           <Form
@@ -81,10 +81,10 @@ const EditColorDrawer: React.FC<{
             defaultValues={initialValues}
           >
             <div className="flex flex-col gap-4">
-              <InputField name="name" label="Name" />
+              <InputField name="name" label="Nombre" />
               <InputField
                 name="hex_code"
-                label="Hex Code"
+                label="Código Hex"
                 type="color"
                 inputProps={{
                   className: 'max-w-8',
@@ -95,14 +95,14 @@ const EditColorDrawer: React.FC<{
         </Drawer.Body>
         <Drawer.Footer>
           <Drawer.Close asChild>
-            <Button variant="secondary">Cancel</Button>
+            <Button variant="secondary">Cancelar</Button>
           </Drawer.Close>
           <Button
             type="submit"
             form={`edit-color-${id}-form`}
             isLoading={updateColorMutation.isPending}
           >
-            Update
+            Actualizar
           </Button>
         </Drawer.Footer>
       </Drawer.Content>
@@ -140,19 +140,19 @@ const DeleteColorPrompt: React.FC<{
       <Prompt.Trigger asChild>{children}</Prompt.Trigger>
       <Prompt.Content>
         <Prompt.Header>
-          <Prompt.Title>Delete {name} color?</Prompt.Title>
+          <Prompt.Title>¿Eliminar color {name}?</Prompt.Title>
           <Prompt.Description>
-            Are you sure you want to delete the color {name}?
+            ¿Estás seguro que deseas eliminar el color {name}?
           </Prompt.Description>
         </Prompt.Header>
         <Prompt.Footer>
-          <Prompt.Cancel>Cancel</Prompt.Cancel>
+          <Prompt.Cancel>Cancelar</Prompt.Cancel>
           <Prompt.Action
             onClick={() => {
               deleteColorMutation.mutate();
             }}
           >
-            Delete
+            Eliminar
           </Prompt.Action>
         </Prompt.Footer>
       </Prompt.Content>
@@ -194,19 +194,19 @@ const RestoreColorPrompt: React.FC<{
       <Prompt.Trigger asChild>{children}</Prompt.Trigger>
       <Prompt.Content>
         <Prompt.Header>
-          <Prompt.Title>Restore {name} color?</Prompt.Title>
+          <Prompt.Title>¿Restaurar color {name}?</Prompt.Title>
           <Prompt.Description>
-            Are you sure you want to restore the color {name}?
+            ¿Estás seguro que deseas restaurar el color {name}?
           </Prompt.Description>
         </Prompt.Header>
         <Prompt.Footer>
-          <Prompt.Cancel>Cancel</Prompt.Cancel>
+          <Prompt.Cancel>Cancelar</Prompt.Cancel>
           <Prompt.Action
             onClick={() => {
               restoreColorMutation.mutate();
             }}
           >
-            Restore
+            Restaurar
           </Prompt.Action>
         </Prompt.Footer>
       </Prompt.Content>
@@ -275,7 +275,7 @@ const MaterialColors: React.FC<{ materialId: string }> = ({ materialId }) => {
   return (
     <div className="-px-6">
       <div className="px-6 flex flex-row gap-6 justify-between items-center mb-4">
-        <Heading level="h2">Colors</Heading>
+        <Heading level="h2">Colores</Heading>
         <div className="flex flex-row gap-4">
           <div className="flex items-center gap-x-2">
             <Switch
@@ -285,17 +285,17 @@ const MaterialColors: React.FC<{ materialId: string }> = ({ materialId }) => {
                 toggleDeleted();
               }}
             />
-            <Label htmlFor="deleted-flag">Show Deleted</Label>
+            <Label htmlFor="deleted-flag">Mostrar Eliminados</Label>
           </div>
           <Drawer open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
             <Drawer.Trigger asChild>
               <Button variant="secondary" size="small">
-                Create
+                Crear
               </Button>
             </Drawer.Trigger>
             <Drawer.Content>
               <Drawer.Header>
-                <Drawer.Title>Create Color</Drawer.Title>
+                <Drawer.Title>Crear Color</Drawer.Title>
               </Drawer.Header>
               <Drawer.Body>
                 <Form
@@ -309,10 +309,10 @@ const MaterialColors: React.FC<{ materialId: string }> = ({ materialId }) => {
                   }}
                 >
                   <div className="flex flex-col gap-4">
-                    <InputField name="name" label="Name" />
+                    <InputField name="name" label="Nombre" />
                     <InputField
                       name="hex_code"
-                      label="Hex Code"
+                      label="Código Hex"
                       type="color"
                       inputProps={{
                         className: 'max-w-8',
@@ -323,14 +323,14 @@ const MaterialColors: React.FC<{ materialId: string }> = ({ materialId }) => {
               </Drawer.Body>
               <Drawer.Footer>
                 <Drawer.Close asChild>
-                  <Button variant="secondary">Cancel</Button>
+                  <Button variant="secondary">Cancelar</Button>
                 </Drawer.Close>
                 <Button
                   type="submit"
                   form="create-color-form"
                   isLoading={createColorMutation.isPending}
                 >
-                  Create
+                  Crear
                 </Button>
               </Drawer.Footer>
             </Drawer.Content>
@@ -340,8 +340,8 @@ const MaterialColors: React.FC<{ materialId: string }> = ({ materialId }) => {
       <Table>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Hex Code</Table.HeaderCell>
+            <Table.HeaderCell>Nombre</Table.HeaderCell>
+            <Table.HeaderCell>Código Hex</Table.HeaderCell>
             <Table.HeaderCell>&nbsp;</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
@@ -350,7 +350,7 @@ const MaterialColors: React.FC<{ materialId: string }> = ({ materialId }) => {
             <Table.Row>
               {/* @ts-ignore */}
               <Table.Cell colSpan={3}>
-                <Text>Loading...</Text>
+                <Text>Cargando...</Text>
               </Table.Cell>
             </Table.Row>
           )}
@@ -358,7 +358,7 @@ const MaterialColors: React.FC<{ materialId: string }> = ({ materialId }) => {
             <Table.Row>
               {/* @ts-ignore */}
               <Table.Cell colSpan={3}>
-                <Text>Error loading colors</Text>
+                <Text>Error al cargar colores</Text>
               </Table.Cell>
             </Table.Row>
           )}
@@ -366,7 +366,7 @@ const MaterialColors: React.FC<{ materialId: string }> = ({ materialId }) => {
             <Table.Row>
               {/* @ts-ignore */}
               <Table.Cell colSpan={3}>
-                <Text>No colors found</Text>
+                <Text>No se encontraron colores</Text>
               </Table.Cell>
             </Table.Row>
           )}
@@ -403,7 +403,7 @@ const MaterialColors: React.FC<{ materialId: string }> = ({ materialId }) => {
                             className="flex flex-row gap-2 items-center w-full justify-start"
                           >
                             <PencilSquare className="text-ui-fg-subtle" />
-                            Edit
+                            Editar
                           </Button>
                         </EditColorDrawer>
                       </DropdownMenu.Item>
@@ -420,7 +420,7 @@ const MaterialColors: React.FC<{ materialId: string }> = ({ materialId }) => {
                               className="flex flex-row gap-2 items-center w-full justify-start"
                             >
                               <ArrowPath className="text-ui-fg-subtle" />
-                              Restore
+                              Restaurar
                             </Button>
                           </RestoreColorPrompt>
                         </DropdownMenu.Item>
@@ -436,7 +436,7 @@ const MaterialColors: React.FC<{ materialId: string }> = ({ materialId }) => {
                               className="flex flex-row gap-2 items-center w-full justify-start"
                             >
                               <Trash className="text-ui-fg-subtle" />
-                              Delete
+                              Eliminar
                             </Button>
                           </DeleteColorPrompt>
                         </DropdownMenu.Item>
@@ -481,8 +481,8 @@ const MaterialPage = () => {
 
   return (
     <Container className="px-0">
-      {isLoading && <Text>Loading...</Text>}
-      {isError && <Text>Error loading material</Text>}
+      {isLoading && <Text>Cargando...</Text>}
+      {isError && <Text>Error al cargar material</Text>}
       {isSuccess && (
         <>
           <div className="px-6 flex flex-row gap-6 justify-between items-center mb-4">

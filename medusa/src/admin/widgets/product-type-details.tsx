@@ -47,7 +47,7 @@ const UpdateDetailsDrawer: React.FC<{
             <div className="flex flex-col gap-4">
               <ImageField
                 name="image"
-                label="Image"
+                label="Imagen"
                 dropzoneRootClassName="h-60"
               />
             </div>
@@ -55,10 +55,10 @@ const UpdateDetailsDrawer: React.FC<{
         </Drawer.Body>
         <Drawer.Footer>
           <Drawer.Close asChild>
-            <Button variant="secondary">Cancel</Button>
+            <Button variant="secondary">Cancelar</Button>
           </Drawer.Close>
           <Button type="submit" form={`edit-product-type-${id}-fields`}>
-            Save
+            Guardar
           </Button>
         </Drawer.Footer>
       </Drawer.Content>
@@ -90,12 +90,12 @@ const ProductTypeDetailsWidget = ({
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading>Details</Heading>
+        <Heading>Detalles</Heading>
         {details !== null && (
           <UpdateDetailsDrawer
             isOpen={isEditModalOpen}
             onOpenChange={setIsModalOpen}
-            title="Update description"
+            title="Actualizar descripción"
             id={data.id}
             initialValue={details}
             onSave={(value) => {
@@ -112,14 +112,14 @@ const ProductTypeDetailsWidget = ({
                 setIsModalOpen(true);
               }}
             >
-              <PencilSquare /> Edit
+              <PencilSquare /> Editar
             </Button>
           </UpdateDetailsDrawer>
         )}
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         {details === null ? (
-          <Text>Loading...</Text>
+          <Text>Cargando...</Text>
         ) : (
           <div className="flex flex-col gap-2">
             {typeof details.image?.url === 'string' ? (
@@ -130,7 +130,7 @@ const ProductTypeDetailsWidget = ({
                 />
               </div>
             ) : (
-              <Text>No image</Text>
+              <Text>Sin imagen</Text>
             )}
           </div>
         )}

@@ -60,59 +60,59 @@ const UpdateDetailsDrawer: React.FC<{
             <div className="flex flex-col gap-4">
               <ImageField
                 name="image"
-                label="Image"
+                label="Imagen"
                 dropzoneRootClassName="h-60"
               />
-              <TextareaField name="description" label="Description" />
+              <TextareaField name="description" label="Descripción" />
               <ImageField
                 name="collection_page_image"
-                label="Collection page image"
+                label="Imagen de página de colección"
                 dropzoneRootClassName="h-60"
               />
               <InputField
                 name="collection_page_heading"
-                label="Collection page heading"
+                label="Encabezado de página de colección"
               />
               <TextareaField
                 name="collection_page_content"
-                label="Collection page content"
+                label="Contenido de página de colección"
               />
               <InputField
                 name="product_page_heading"
-                label="Product page heading"
+                label="Encabezado de página de producto"
               />
               <ImageField
                 name="product_page_image"
-                label="Product page image"
+                label="Imagen de página de producto"
                 dropzoneRootClassName="h-60"
               />
               <ImageField
                 name="product_page_wide_image"
-                label="Product page wide image"
+                label="Imagen ancha de página de producto"
                 dropzoneRootClassName="h-60"
               />
               <ImageField
                 name="product_page_cta_image"
-                label="Product page CTA image"
+                label="Imagen CTA de página de producto"
                 dropzoneRootClassName="h-60"
               />
               <InputField
                 name="product_page_cta_heading"
-                label="Product page CTA heading"
+                label="Encabezado CTA de página de producto"
               />
               <InputField
                 name="product_page_cta_link"
-                label="Product page CTA link label"
+                label="Texto del enlace CTA de página de producto"
               />
             </div>
           </Form>
         </Drawer.Body>
         <Drawer.Footer>
           <Drawer.Close asChild>
-            <Button variant="secondary">Cancel</Button>
+            <Button variant="secondary">Cancelar</Button>
           </Drawer.Close>
           <Button type="submit" form={`edit-collection-${id}-fields`}>
-            Save
+            Guardar
           </Button>
         </Drawer.Footer>
       </Drawer.Content>
@@ -144,12 +144,12 @@ const CollectionDetailsWidget = ({
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading>Details</Heading>
+        <Heading>Detalles</Heading>
         {details !== null && (
           <UpdateDetailsDrawer
             isOpen={isEditModalOpen}
             onOpenChange={setIsModalOpen}
-            title="Update collection details"
+            title="Actualizar detalles de colección"
             id={data.id}
             initialValue={details}
             onSave={(value) => {
@@ -166,14 +166,14 @@ const CollectionDetailsWidget = ({
                 setIsModalOpen(true);
               }}
             >
-              <PencilSquare /> Edit
+              <PencilSquare /> Editar
             </Button>
           </UpdateDetailsDrawer>
         )}
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         {details === null ? (
-          <Text>Loading...</Text>
+          <Text>Cargando...</Text>
         ) : (
           <div className="flex flex-col gap-2">
             {typeof details.image?.url === 'string' && (
@@ -189,10 +189,10 @@ const CollectionDetailsWidget = ({
             )}
 
             {typeof details.image?.url !== 'string' && !details.description && (
-              <Text>No details available</Text>
+              <Text>No hay detalles disponibles</Text>
             )}
 
-            <Heading>Collection Page</Heading>
+            <Heading>Página de Colección</Heading>
 
             {typeof details.collection_page_image?.url === 'string' && (
               <div>
@@ -212,10 +212,10 @@ const CollectionDetailsWidget = ({
             {typeof details.collection_page_image?.url !== 'string' &&
               !details.collection_page_heading &&
               !details.collection_page_content && (
-                <Text>Collection page details not entered</Text>
+                <Text>Detalles de página de colección no ingresados</Text>
               )}
 
-            <Heading>Product Page</Heading>
+            <Heading>Página de Producto</Heading>
 
             {typeof details.product_page_heading?.length === 'string' && (
               <Text>{details.product_page_heading}</Text>
@@ -262,7 +262,7 @@ const CollectionDetailsWidget = ({
               typeof details.product_page_cta_image?.url !== 'string' &&
               !details.product_page_cta_heading &&
               !details.product_page_cta_link && (
-                <Text>Product page details not entered</Text>
+                <Text>Detalles de página de producto no ingresados</Text>
               )}
           </div>
         )}

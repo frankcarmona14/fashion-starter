@@ -62,19 +62,19 @@ const DeleteMaterialPrompt: React.FC<{
       <Prompt.Trigger asChild>{children}</Prompt.Trigger>
       <Prompt.Content>
         <Prompt.Header>
-          <Prompt.Title>Delete {name} material?</Prompt.Title>
+          <Prompt.Title>¿Eliminar material {name}?</Prompt.Title>
           <Prompt.Description>
-            Are you sure you want to delete the material {name}?
+            ¿Estás seguro que deseas eliminar el material {name}?
           </Prompt.Description>
         </Prompt.Header>
         <Prompt.Footer>
-          <Prompt.Cancel>Cancel</Prompt.Cancel>
+          <Prompt.Cancel>Cancelar</Prompt.Cancel>
           <Prompt.Action
             onClick={() => {
               deleteMaterialMutation.mutate();
             }}
           >
-            Delete
+            Eliminar
           </Prompt.Action>
         </Prompt.Footer>
       </Prompt.Content>
@@ -111,19 +111,19 @@ const RestoreMaterialPrompt: React.FC<{
       <Prompt.Trigger asChild>{children}</Prompt.Trigger>
       <Prompt.Content>
         <Prompt.Header>
-          <Prompt.Title>Restore {name} material?</Prompt.Title>
+          <Prompt.Title>¿Restaurar material {name}?</Prompt.Title>
           <Prompt.Description>
-            Are you sure you want to restore the material {name}?
+            ¿Estás seguro que deseas restaurar el material {name}?
           </Prompt.Description>
         </Prompt.Header>
         <Prompt.Footer>
-          <Prompt.Cancel>Cancel</Prompt.Cancel>
+          <Prompt.Cancel>Cancelar</Prompt.Cancel>
           <Prompt.Action
             onClick={() => {
               restoreMaterialMutation.mutate();
             }}
           >
-            Restore
+            Restaurar
           </Prompt.Action>
         </Prompt.Footer>
       </Prompt.Content>
@@ -188,7 +188,7 @@ const FashionPage = () => {
   return (
     <Container className="px-0">
       <div className="px-6 flex flex-row gap-6 justify-between items-center mb-4">
-        <Heading level="h2">Materials</Heading>
+        <Heading level="h2">Materiales</Heading>
         <div className="flex flex-row gap-4">
           <div className="flex items-center gap-x-2">
             <Switch
@@ -198,17 +198,17 @@ const FashionPage = () => {
                 toggleDeleted();
               }}
             />
-            <Label htmlFor="deleted-flag">Show Deleted</Label>
+            <Label htmlFor="deleted-flag">Mostrar Eliminados</Label>
           </div>
           <Drawer open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
             <Drawer.Trigger asChild>
               <Button variant="secondary" size="small">
-                Create
+                Crear
               </Button>
             </Drawer.Trigger>
             <Drawer.Content>
               <Drawer.Header>
-                <Drawer.Title>Create Material</Drawer.Title>
+                <Drawer.Title>Crear Material</Drawer.Title>
               </Drawer.Header>
               <Drawer.Body>
                 <Form
@@ -221,19 +221,19 @@ const FashionPage = () => {
                     id: 'create-material-form',
                   }}
                 >
-                  <InputField name="name" label="Name" />
+                  <InputField name="name" label="Nombre" />
                 </Form>
               </Drawer.Body>
               <Drawer.Footer>
                 <Drawer.Close asChild>
-                  <Button variant="secondary">Cancel</Button>
+                  <Button variant="secondary">Cancelar</Button>
                 </Drawer.Close>
                 <Button
                   type="submit"
                   form="create-material-form"
                   isLoading={createMaterialMutation.isPending}
                 >
-                  Create
+                  Crear
                 </Button>
               </Drawer.Footer>
             </Drawer.Content>
@@ -243,7 +243,7 @@ const FashionPage = () => {
       <Table>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>Name</Table.HeaderCell>
+            <Table.HeaderCell>Nombre</Table.HeaderCell>
             <Table.HeaderCell>&nbsp;</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
@@ -252,7 +252,7 @@ const FashionPage = () => {
             <Table.Row>
               {/* @ts-ignore */}
               <Table.Cell colSpan={2}>
-                <Text>Loading...</Text>
+                <Text>Cargando...</Text>
               </Table.Cell>
             </Table.Row>
           )}
@@ -260,7 +260,7 @@ const FashionPage = () => {
             <Table.Row>
               {/* @ts-ignore */}
               <Table.Cell colSpan={2}>
-                <Text>Error loading materials</Text>
+                <Text>Error al cargar materiales</Text>
               </Table.Cell>
             </Table.Row>
           )}
@@ -268,7 +268,7 @@ const FashionPage = () => {
             <Table.Row>
               {/* @ts-ignore */}
               <Table.Cell colSpan={2}>
-                <Text>No materials found</Text>
+                <Text>No se encontraron materiales</Text>
               </Table.Cell>
             </Table.Row>
           )}
@@ -297,7 +297,7 @@ const FashionPage = () => {
                             className="flex flex-row gap-2 items-center w-full justify-start"
                           >
                             <PencilSquare className="text-ui-fg-subtle" />
-                            Edit
+                            Editar
                           </Button>
                         </EditMaterialDrawer>
                       </DropdownMenu.Item>
@@ -313,7 +313,7 @@ const FashionPage = () => {
                               className="flex flex-row gap-2 items-center w-full justify-start"
                             >
                               <ArrowPath className="text-ui-fg-subtle" />
-                              Restore
+                              Restaurar
                             </Button>
                           </RestoreMaterialPrompt>
                         </DropdownMenu.Item>
@@ -328,7 +328,7 @@ const FashionPage = () => {
                               className="flex flex-row gap-2 items-center w-full justify-start"
                             >
                               <Trash className="text-ui-fg-subtle" />
-                              Delete
+                              Eliminar
                             </Button>
                           </DeleteMaterialPrompt>
                         </DropdownMenu.Item>
@@ -358,6 +358,6 @@ const FashionPage = () => {
 export default withQueryClient(FashionPage);
 
 export const config = defineRouteConfig({
-  label: 'Materials & Colors',
+  label: 'Materiales y Colores',
   icon: Swatch,
 });
