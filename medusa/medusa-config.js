@@ -42,22 +42,18 @@ module.exports = defineConfig({
       resolve: '@medusajs/medusa/file',
       options: {
         providers: [
-          // {
-          //   resolve: '@medusajs/medusa/file-s3',
-          //   id: 's3',
-          //   options: {
-          //     file_url: process.env.S3_FILE_URL,
-          //     access_key_id: process.env.S3_ACCESS_KEY_ID,
-          //     secret_access_key: process.env.S3_SECRET_ACCESS_KEY,
-          //     region: process.env.S3_REGION,
-          //     bucket: process.env.S3_BUCKET,
-          //     endpoint: process.env.S3_ENDPOINT,
-          //     additional_client_config: {
-          //       forcePathStyle:
-          //         process.env.S3_FORCE_PATH_STYLE === 'true' ? true : undefined,
-          //     },
-          //   },
-          // },
+          {
+            resolve: '@medusajs/medusa/file-s3',
+            id: 's3',
+            options: {
+              file_url: "https://prueba-servy.lon1.cdn.digitaloceanspaces.com",
+              access_key_id: "DO00UB3TZ98CGGQF3JNE",
+              secret_access_key: "PpdlkQ699TJnNkPiCEpyEObkh2iTR9CjROB1QhIL40Q",
+              region: "lon1",
+              bucket: "prueba-servy",
+              endpoint: "https://lon1.digitaloceanspaces.com"
+            }
+          }
         ],
       },
     },
