@@ -2,26 +2,20 @@
 
 import { useEffect, useState } from "react"
 import { useRouter, useSearchParams, usePathname } from "next/navigation"
-import { HttpTypes } from "@medusajs/types"
 import { twJoin } from "tailwind-merge"
-import { RadioGroup } from "react-aria-components"
-
-import { setShippingMethod } from "@lib/data/cart"
 import { convertToLocale } from "@lib/util/money"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import { Button } from "@/components/Button"
-import { UiRadio, UiRadioBox, UiRadioLabel } from "@/components/ui/Radio"
+import {
+  UiRadio,
+  UiRadioBox,
+  UiRadioGroup,
+  UiRadioLabel,
+} from "@/components/ui/Radio"
+import { useCartShippingMethods, useSetShippingMethod } from "hooks/cart"
+import { StoreCart } from "@medusajs/types"
 
-type ShippingProps = {
-  cart: HttpTypes.StoreCart
-  availableShippingMethods: HttpTypes.StoreCartShippingOption[] | null
-}
-
-const Shipping: React.FC<ShippingProps> = ({
-  cart,
-  availableShippingMethods,
-}) => {
-  const [isLoading, setIsLoading] = useState(false)
+const Shipping = ({ cart }: { cart: StoreCart }) => {
   const [error, setError] = useState<string | null>(null)
 
   const searchParams = useSearchParams()
@@ -30,24 +24,22 @@ const Shipping: React.FC<ShippingProps> = ({
 
   const isOpen = searchParams.get("step") === "shipping"
 
+  const { data: availableShippingMethods } = useCartShippingMethods(cart.id)
+
+  const { mutate, isPending } = useSetShippingMethod({ cartId: cart.id })
   const selectedShippingMethod = availableShippingMethods?.find(
-    // TODO: remove the previously selected shipping method instead of using the last one
-    (method) => method.id === cart.shipping_methods?.at(-1)?.shipping_option_id
+    (method) => method.id === cart.shipping_methods?.[0]?.shipping_option_id
   )
 
   const handleSubmit = () => {
     router.push(pathname + "?step=payment", { scroll: false })
   }
 
-  const set = async (id: string) => {
-    setIsLoading(true)
-    await setShippingMethod({ cartId: cart.id, shippingMethodId: id })
-      .catch((err) => {
-        setError(err.message)
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
+  const set = (id: string) => {
+    mutate(
+      { shippingMethodId: id },
+      { onError: (err) => setError(err.message) }
+    )
   }
 
   useEffect(() => {
@@ -56,7 +48,7 @@ const Shipping: React.FC<ShippingProps> = ({
 
   return (
     <>
-      <div className="flex justify-between mb-8 border-t border-grayscale-200 pt-8 mt-8">
+      <div className="flex justify-between mb-6 md:mb-8 border-t border-grayscale-200 pt-8 mt-8">
         <div>
           <p
             className={twJoin(
@@ -91,8 +83,8 @@ const Shipping: React.FC<ShippingProps> = ({
           </div>
         ) : (
           <div>
-            <RadioGroup
-              className="flex flex-col gap-2 mb-8"
+            <UiRadioGroup
+              className="flex flex-col gap-4 mb-8"
               value={selectedShippingMethod?.id}
               onChange={set}
               aria-label="Shipping methods"
@@ -105,9 +97,7 @@ const Shipping: React.FC<ShippingProps> = ({
                   className="gap-4"
                 >
                   <UiRadioBox />
-                  <UiRadioLabel className="group-data-[selected=true]:font-normal">
-                    {option.name}
-                  </UiRadioLabel>
+                  <UiRadioLabel>{option.name}</UiRadioLabel>
                   <UiRadioLabel className="ml-auto group-data-[selected=true]:font-normal">
                     {convertToLocale({
                       amount: option.amount!,
@@ -116,14 +106,14 @@ const Shipping: React.FC<ShippingProps> = ({
                   </UiRadioLabel>
                 </UiRadio>
               ))}
-            </RadioGroup>
+            </UiRadioGroup>
 
             <ErrorMessage error={error} />
 
             <Button
               onPress={handleSubmit}
-              isLoading={isLoading}
-              disabled={!cart.shipping_methods?.[0]}
+              isLoading={isPending}
+              isDisabled={!cart.shipping_methods?.[0]}
             >
               Next
             </Button>
@@ -132,9 +122,9 @@ const Shipping: React.FC<ShippingProps> = ({
       ) : cart &&
         (cart.shipping_methods?.length ?? 0) > 0 &&
         selectedShippingMethod ? (
-        <ul className="flex gap-10">
+        <ul className="flex max-sm:flex-col flex-wrap gap-y-2 gap-x-28">
           <li className="text-grayscale-500">Shipping</li>
-          <li>{selectedShippingMethod.name}</li>
+          <li className="text-grayscale-600">{selectedShippingMethod.name}</li>
         </ul>
       ) : null}
     </>

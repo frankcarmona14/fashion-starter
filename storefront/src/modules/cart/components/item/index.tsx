@@ -1,9 +1,5 @@
 "use client"
-
-import { useState } from "react"
 import { HttpTypes } from "@medusajs/types"
-
-import { updateLineItem } from "@lib/data/cart"
 import { getVariantItemsInStock } from "@lib/util/inventory"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import DeleteButton from "@modules/common/components/delete-button"
@@ -11,37 +7,41 @@ import LineItemUnitPrice from "@modules/common/components/line-item-unit-price"
 import Thumbnail from "@modules/products/components/thumbnail"
 import { NumberField } from "@/components/NumberField"
 import { LocalizedLink } from "@/components/LocalizedLink"
+import { twMerge } from "tailwind-merge"
+import { useUpdateLineItem } from "hooks/cart"
+import { withReactQueryProvider } from "@lib/util/react-query"
+import * as React from "react"
 
 type ItemProps = {
   item: HttpTypes.StoreCartLineItem
+  className?: string
 }
 
-const Item = ({ item }: ItemProps) => {
-  const [updating, setUpdating] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
+const Item = ({ item, className }: ItemProps) => {
   const { handle } = item.variant?.product ?? {}
-
-  const changeQuantity = async (quantity: number) => {
-    setError(null)
-    setUpdating(true)
-
-    await updateLineItem({
-      lineId: item.id,
-      quantity,
-    })
-      .catch((err) => {
-        setError(err.message)
-      })
-      .finally(() => {
-        setUpdating(false)
-      })
-  }
-
+  const { mutateAsync, isPending, error } = useUpdateLineItem()
   const maxQuantity = item.variant ? getVariantItemsInStock(item.variant) : 0
 
+  const [quantity, setQuantity] = React.useState(item.quantity)
+
+  React.useEffect(() => {
+    const handler = setTimeout(() => {
+      if (quantity !== item.quantity) {
+        mutateAsync({ lineId: item.id, quantity })
+      }
+    }, 500)
+
+    return () => clearTimeout(handler)
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quantity, item])
+
   return (
-    <div className="border-b border-grayscale-100 py-8 last:pb-0 last:border-b-0">
+    <div
+      className={twMerge(
+        "border-b border-grayscale-100 py-8 lg:last:pb-0 lg:last:border-b-0",
+        className
+      )}
+    >
       <div className="flex gap-6">
         <LocalizedLink href={`/products/${handle}`}>
           <Thumbnail
@@ -58,29 +58,33 @@ const Item = ({ item }: ItemProps) => {
                 {item.product_title}
               </LocalizedLink>
             </h2>
-            <p className="text-grayscale-500 text-xs sm:text-base">
+            <p className="text-grayscale-500 text-xs sm:text-base max-sm:mb-4">
               {item.variant?.title}
             </p>
+            <LineItemUnitPrice item={item} className="sm:hidden" />
           </div>
           <NumberField
             size="sm"
             minValue={1}
             maxValue={maxQuantity}
-            value={item.quantity}
-            onChange={(value) => changeQuantity(value)}
-            isDisabled={updating}
+            value={quantity}
+            onChange={setQuantity}
+            isDisabled={isPending}
             className="w-25"
             aria-label="Quantity"
           />
         </div>
         <div className="flex flex-col justify-between items-end text-right">
-          <LineItemUnitPrice item={item} />
+          <LineItemUnitPrice item={item} className="max-sm:hidden" />
           <DeleteButton id={item.id} data-testid="product-delete-button" />
         </div>
       </div>
-      <ErrorMessage error={error} data-testid="product-error-message" />
+      <ErrorMessage
+        error={error?.message}
+        data-testid="product-error-message"
+      />
     </div>
   )
 }
 
-export default Item
+export default withReactQueryProvider(Item)

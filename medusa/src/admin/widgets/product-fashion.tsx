@@ -209,7 +209,7 @@ const ProductFashionWidget = withQueryClient(
           <Heading>Materiales y Colores</Heading>
           <IconButton
             variant="transparent"
-            className="text-ui-fg-muted hover:text-ui-fg-subtle"
+            className="text-fg-muted dark:text-fg-muted-dark hover:text-fg-subtle dark:hover:text-fg-subtle-dark"
             onClick={(event) => {
               event.preventDefault();
               productFashion.refetch();
@@ -220,7 +220,7 @@ const ProductFashionWidget = withQueryClient(
             <ArrowPath />
           </IconButton>
         </div>
-        <div className="text-ui-fg-subtle px-6 py-4">
+        <div className="text-fg-subtle dark:text-fg-subtle-dark px-6 py-4">
           {productFashion.isLoading ? (
             <Text>Cargando...</Text>
           ) : productFashion.isError ? (
@@ -240,7 +240,7 @@ const ProductFashionWidget = withQueryClient(
                     <strong
                       className={
                         typeof material === 'string'
-                          ? 'border-b border-dashed border-ui-button-danger'
+                          ? 'border-b border-dashed border-button-danger dark:border-button-danger-dark'
                           : undefined
                       }
                     >
@@ -281,12 +281,12 @@ const ProductFashionWidget = withQueryClient(
                           <AddColorDrawer materialId={material.id} name={color}>
                             <IconButton
                               variant="transparent"
-                              className="w-10 h-10 bg-grayscale-20 border-2 border-dashed border-ui-button-danger rounded-full"
+                              className="w-10 h-10 bg-grayscale-20 border-2 border-dashed border-button-danger dark:border-button-danger-dark rounded-full"
                             >
                               <PlusMini />
                             </IconButton>
                           </AddColorDrawer>
-                          {/* <div className="w-10 h-10 bg-grayscale-20 border-2 border-dashed border-ui-button-danger rounded-full" /> */}
+                          {/* <div className="w-10 h-10 bg-grayscale-20 border-2 border-dashed border-button-danger dark:border-button-danger-dark rounded-full" /> */}
                           <Text>{color}</Text>
                         </div>
                       ))}
@@ -301,7 +301,7 @@ const ProductFashionWidget = withQueryClient(
         </div>
       </Container>
     );
-  },
+  }
 );
 
 export const config = defineWidgetConfig({

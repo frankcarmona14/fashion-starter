@@ -1,16 +1,23 @@
-// External components
 import * as React from "react"
-
-// Lib
 import { listRegions } from "@lib/data/regions"
-
-// Components
+import { SearchField } from "@/components/SearchField"
 import { Layout, LayoutColumn } from "@/components/Layout"
-import { LocalizedButtonLink, LocalizedLink } from "@/components/LocalizedLink"
-import { CartIcon } from "./CartIcon"
-import { HeaderDrawer } from "./HeaderDrawer"
-import { RegionSwitcher } from "./RegionSwitcher"
-import { HeaderWrapper } from "./HeaderWrapper"
+import { LocalizedLink } from "@/components/LocalizedLink"
+import { HeaderDrawer } from "@/components/HeaderDrawer"
+import { RegionSwitcher } from "@/components/RegionSwitcher"
+import { HeaderWrapper } from "@/components/HeaderWrapper"
+
+import dynamic from "next/dynamic"
+
+const LoginLink = dynamic(
+  () => import("@modules/header/components/LoginLink"),
+  { loading: () => <></> }
+)
+
+const CartDrawer = dynamic(
+  () => import("@/components/CartDrawer").then((mod) => mod.CartDrawer),
+  { loading: () => <></> }
+)
 
 export const Header: React.FC = async () => {
   const regions = await listRegions()
@@ -44,39 +51,21 @@ export const Header: React.FC = async () => {
                 <RegionSwitcher
                   countryOptions={countryOptions}
                   className="w-16"
-                  selectButtonClassName="bg-transparent border-0 h-auto !gap-0 !p-1 w-full"
+                  selectButtonClassName="h-auto !gap-0 !p-1 transition-none"
                   selectIconClassName="text-current"
                 />
-                {/* <Button
-                  variant="ghost"
-                  className="p-1 group-data-[light=true]:md:text-white group-data-[sticky=true]:md:text-black"
-                >
-                  <Icon name="search" className="w-5 h-5" />
-                </Button> */}
-                {/* <Button
-                  variant="ghost"
-                  className="p-1 group-data-[light=true]:md:text-white"
-                >
-                  <Icon name="user" className="w-6 h-6" />
-                </Button> */}
-
-                <LocalizedButtonLink
-                  href="/cart"
-                  variant="ghost"
-                  className="p-1 group-data-[light=true]:md:text-white group-data-[sticky=true]:md:text-black"
-                >
-                  <CartIcon className="w-6 h-6" />
-                </LocalizedButtonLink>
+                <React.Suspense>
+                  <SearchField countryOptions={countryOptions} />
+                </React.Suspense>
+                <LoginLink className="p-1 group-data-[light=true]:md:text-white group-data-[sticky=true]:md:text-black" />
+                <CartDrawer />
               </div>
-              <div className="flex items-center gap-6 md:hidden">
-                <LocalizedButtonLink
-                  href="/cart"
-                  variant="ghost"
-                  className="p-1 group-data-[light=true]:md:text-white"
-                >
-                  <CartIcon className="w-6 h-6" wrapperClassName="w-6 h-6" />
-                </LocalizedButtonLink>
-                <HeaderDrawer countryOptions={countryOptions} />
+              <div className="flex items-center gap-4 md:hidden">
+                <LoginLink className="p-1 group-data-[light=true]:md:text-white" />
+                <CartDrawer />
+                <React.Suspense>
+                  <HeaderDrawer countryOptions={countryOptions} />
+                </React.Suspense>
               </div>
             </div>
           </LayoutColumn>

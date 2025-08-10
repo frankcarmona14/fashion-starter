@@ -225,7 +225,7 @@ const MaterialColors: React.FC<{ materialId: string }> = ({ materialId }) => {
         return next;
       });
     },
-    [setSearchParams],
+    [setSearchParams]
   );
   const deleted = searchParams.has('deleted');
   const toggleDeleted = React.useCallback(() => {
@@ -257,7 +257,7 @@ const MaterialColors: React.FC<{ materialId: string }> = ({ materialId }) => {
         }`,
         {
           credentials: 'include',
-        },
+        }
       ).then(
         (res) =>
           res.json() as Promise<{
@@ -265,7 +265,7 @@ const MaterialColors: React.FC<{ materialId: string }> = ({ materialId }) => {
             count: number;
             page: number;
             last_page: number;
-          }>,
+          }>
       );
     },
   });
@@ -402,8 +402,8 @@ const MaterialColors: React.FC<{ materialId: string }> = ({ materialId }) => {
                             variant="transparent"
                             className="flex flex-row gap-2 items-center w-full justify-start"
                           >
-                            <PencilSquare className="text-ui-fg-subtle" />
-                            Editar
+                            <PencilSquare className="text-fg-subtle dark:text-fg-subtle-dark" />
+                            Edit
                           </Button>
                         </EditColorDrawer>
                       </DropdownMenu.Item>
@@ -419,8 +419,8 @@ const MaterialColors: React.FC<{ materialId: string }> = ({ materialId }) => {
                               variant="transparent"
                               className="flex flex-row gap-2 items-center w-full justify-start"
                             >
-                              <ArrowPath className="text-ui-fg-subtle" />
-                              Restaurar
+                              <ArrowPath className="text-fg-subtle dark:text-fg-subtle-dark" />
+                              Restore
                             </Button>
                           </RestoreColorPrompt>
                         </DropdownMenu.Item>
@@ -435,8 +435,8 @@ const MaterialColors: React.FC<{ materialId: string }> = ({ materialId }) => {
                               variant="transparent"
                               className="flex flex-row gap-2 items-center w-full justify-start"
                             >
-                              <Trash className="text-ui-fg-subtle" />
-                              Eliminar
+                              <Trash className="text-fg-subtle dark:text-fg-subtle-dark" />
+                              Delete
                             </Button>
                           </DeleteColorPrompt>
                         </DropdownMenu.Item>

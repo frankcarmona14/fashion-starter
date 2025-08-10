@@ -3,9 +3,7 @@
 import { isEqual } from "lodash"
 import { useEffect, useMemo, useState } from "react"
 import { HttpTypes } from "@medusajs/types"
-import { Popover, Radio, RadioGroup, Select } from "react-aria-components"
-
-import { addToCart } from "@lib/data/cart"
+import * as ReactAria from "react-aria-components"
 import { getVariantItemsInStock } from "@lib/util/inventory"
 import { Button } from "@/components/Button"
 import { NumberField } from "@/components/NumberField"
@@ -17,7 +15,10 @@ import {
   UiSelectValue,
 } from "@/components/ui/Select"
 import { useCountryCode } from "hooks/country-code"
-import ProductPrice from "../product-price"
+import ProductPrice from "@modules/products/components/product-price"
+import { UiRadioGroup } from "@/components/ui/Radio"
+import { withReactQueryProvider } from "@lib/util/react-query"
+import { useAddLineItem } from "hooks/cart"
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
@@ -71,17 +72,14 @@ const getInitialOptions = (product: ProductActionsProps["product"]) => {
   return null
 }
 
-export default function ProductActions({
-  product,
-  materials,
-  disabled,
-}: ProductActionsProps) {
+function ProductActions({ product, materials, disabled }: ProductActionsProps) {
   const [options, setOptions] = useState<Record<string, string | undefined>>(
     getInitialOptions(product) ?? {}
   )
   const [quantity, setQuantity] = useState(1)
-  const [isAdding, setIsAdding] = useState(false)
   const countryCode = useCountryCode()
+
+  const { mutateAsync, isPending } = useAddLineItem()
 
   // If there is only 1 variant, preselect the options
   useEffect(() => {
@@ -119,15 +117,11 @@ export default function ProductActions({
   const handleAddToCart = async () => {
     if (!selectedVariant?.id) return null
 
-    setIsAdding(true)
-
-    await addToCart({
+    await mutateAsync({
       variantId: selectedVariant.id,
       quantity,
       countryCode,
     })
-
-    setIsAdding(false)
   }
 
   const hasMultipleVariants = (product.variants?.length ?? 0) > 1
@@ -173,7 +167,7 @@ export default function ProductActions({
         <p>{product.description}</p>
       </div>
       {hasMultipleVariants && (
-        <div className="flex flex-col gap-8 md:gap-6 mb-10 md:mb-26">
+        <div className="flex flex-col gap-8 md:gap-6 mb-4 md:mb-26">
           {materialOption && colorOption && (
             <>
               <div>
@@ -185,21 +179,21 @@ export default function ProductActions({
                     </span>
                   )}
                 </p>
-                <Select
+                <ReactAria.Select
                   selectedKey={options[materialOption.id] ?? null}
                   onSelectionChange={(value) => {
-                    setOptionValue(materialOption.id, `${value}`)
+                    setOptions({ [materialOption.id]: `${value}` })
                   }}
                   placeholder="Choose material"
                   className="w-full md:w-60"
-                  isDisabled={!!disabled || isAdding}
+                  isDisabled={!!disabled || isPending}
                   aria-label="Material"
                 >
                   <UiSelectButton className="!h-12 px-4 gap-2 max-md:text-base">
                     <UiSelectValue />
                     <UiSelectIcon className="h-6 w-6" />
                   </UiSelectButton>
-                  <Popover className="w-[--trigger-width]">
+                  <ReactAria.Popover className="w-[--trigger-width]">
                     <UiSelectListBox>
                       {materials.map((material) => (
                         <UiSelectListBoxItem
@@ -210,28 +204,28 @@ export default function ProductActions({
                         </UiSelectListBoxItem>
                       ))}
                     </UiSelectListBox>
-                  </Popover>
-                </Select>
+                  </ReactAria.Popover>
+                </ReactAria.Select>
               </div>
               {selectedMaterial && (
-                <div>
+                <div className="mb-6">
                   <p className="mb-4">
                     Colors
                     <span className="text-grayscale-500 ml-6">
                       {options[colorOption.id]}
                     </span>
                   </p>
-                  <RadioGroup
+                  <UiRadioGroup
                     value={options[colorOption.id] ?? null}
                     onChange={(value) => {
                       setOptionValue(colorOption.id, value)
                     }}
                     aria-label="Color"
                     className="flex gap-6"
-                    isDisabled={!!disabled || isAdding}
+                    isDisabled={!!disabled || isPending}
                   >
                     {selectedMaterial.colors.map((color) => (
-                      <Radio
+                      <ReactAria.Radio
                         key={color.id}
                         value={color.name}
                         aria-label={color.name}
@@ -239,7 +233,7 @@ export default function ProductActions({
                         style={{ background: color.hex_code }}
                       />
                     ))}
-                  </RadioGroup>
+                  </UiRadioGroup>
                 </div>
               )}
             </>
@@ -256,21 +250,21 @@ export default function ProductActions({
                       </span>
                     )}
                   </p>
-                  <Select
+                  <ReactAria.Select
                     selectedKey={options[option.id] ?? null}
                     onSelectionChange={(value) => {
                       setOptionValue(option.id, `${value}`)
                     }}
                     placeholder={`Choose ${option.title.toLowerCase()}`}
                     className="w-full md:w-60"
-                    isDisabled={!!disabled || isAdding}
+                    isDisabled={!!disabled || isPending}
                     aria-label={option.title}
                   >
                     <UiSelectButton className="!h-12 px-4 gap-2 max-md:text-base">
                       <UiSelectValue />
                       <UiSelectIcon className="h-6 w-6" />
                     </UiSelectButton>
-                    <Popover className="w-[--trigger-width]">
+                    <ReactAria.Popover className="w-[--trigger-width]">
                       <UiSelectListBox>
                         {(option.values ?? [])
                           .filter((value) => Boolean(value.value))
@@ -283,15 +277,18 @@ export default function ProductActions({
                             </UiSelectListBoxItem>
                           ))}
                       </UiSelectListBox>
-                    </Popover>
-                  </Select>
+                    </ReactAria.Popover>
+                  </ReactAria.Select>
                 </div>
               )
             })}
         </div>
       )}
-      <div className="flex max-sm:flex-col gap-4 mb-4">
+      <div className="flex max-sm:flex-col gap-4">
         <NumberField
+          isDisabled={
+            !itemsInStock || !selectedVariant || !!disabled || isPending
+          }
           value={quantity}
           onChange={setQuantity}
           minValue={1}
@@ -301,8 +298,8 @@ export default function ProductActions({
         />
         <Button
           onPress={handleAddToCart}
-          disabled={!itemsInStock || !selectedVariant || !!disabled || isAdding}
-          isLoading={isAdding}
+          isDisabled={!itemsInStock || !selectedVariant || !!disabled}
+          isLoading={isPending}
           className="sm:flex-1"
         >
           {!selectedVariant
@@ -315,3 +312,5 @@ export default function ProductActions({
     </>
   )
 }
+
+export default withReactQueryProvider(ProductActions)

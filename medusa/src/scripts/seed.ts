@@ -26,8 +26,8 @@ import {
   Modules,
   ProductStatus,
 } from '@medusajs/framework/utils';
-import type FashionModuleService from 'src/modules/fashion/service';
-import type { MaterialModelType } from 'src/modules/fashion/models/material';
+import type FashionModuleService from '../modules/fashion/service';
+import type { MaterialModelType } from '../modules/fashion/models/material';
 
 async function getImageUrlContent(url: string) {
   const response = await fetch(url);
